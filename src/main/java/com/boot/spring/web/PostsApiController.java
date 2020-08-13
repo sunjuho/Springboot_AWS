@@ -1,6 +1,6 @@
 package com.boot.spring.web;
 
-import com.boot.spring.service.posts.PostsService;
+import com.boot.spring.service.PostsService;
 import com.boot.spring.web.dto.PostsResponseDto;
 import com.boot.spring.web.dto.PostsSaveRequestDto;
 import com.boot.spring.web.dto.PostsUpdateRequestDto;
@@ -14,6 +14,7 @@ public class PostsApiController {
 
     @PostMapping("/api/v1/posts")
     public Long save(@RequestBody PostsSaveRequestDto requestDto) {
+
         return postsService.save(requestDto);
     }
 
