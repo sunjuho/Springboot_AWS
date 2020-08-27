@@ -4,6 +4,7 @@ import com.boot.spring.domain.user.Role;
 import com.boot.spring.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Map;
 
@@ -26,6 +27,11 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
+        if (registrationId.equals("naver")) {
+            return ofNaver(userNameAttributeName, attributes);
+
+        }
+
         return ofGoogle(userNameAttributeName, attributes);
 
     }
@@ -40,6 +46,18 @@ public class OAuthAttributes {
                 .build();
 
 
+    }
+
+    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+        Map<String, Object> response = (Map<String, Object>)attributes.get("response");
+
+        return OAuthAttributes.builder()
+                .name((String)response.get("name"))
+                .email((String) response.get("email"))
+                .picture((String) response.get("profile_image"))
+                .attributes(response)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
     }
 
     public User toEntity() {
